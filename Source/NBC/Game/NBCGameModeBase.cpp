@@ -38,6 +38,13 @@ void ANBCGameModeBase::ProcessPlayerInput(ANBCPlayerController* InputPlayer, con
 	ANBCPlayerState* PS = InputPlayer->GetPlayerState<ANBCPlayerState>();
 	if (!PS) return;
 
+	if (PS->CurrentAttempts >= PS->MaxAttempts)
+	{
+		FString WaitMessage = TEXT("System: 기회를 모두 소진했습니다. 다른 플레이어의 결과가 나올 때까지 기다려주세요.");
+		InputPlayer->ClientRPCPrintChatMessage(WaitMessage);
+		return;
+	}
+
 	if (IsValidGuess(ChatMessage))
 	{
 		int32 StrikeCount = 0;
